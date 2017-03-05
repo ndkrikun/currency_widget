@@ -43,12 +43,18 @@ table {
 /* mixins of breakpoits */
 /* mixins fonts */
 /* mixins */
+@font-face {
+  font-family: 'Helvetica-light';
+  src: url("/fonts/helvetica-light.ttf");
+  font-weight: normal;
+  font-style: normal; }
+
 html, body {
   height: 100%; }
 
 body {
   line-height: 1;
-  font-family: UbuntuB;
+  font-family: Helvetica-light;
   font-size: 62.5%;
   color: #000000;
   background-color: #ffffff;
@@ -140,20 +146,77 @@ body.is-noscroll {
   width: 100%;
   font-size: 0; }
   .widget__part {
+    position: relative;
     display: inline-block;
     width: 50%;
     height: 100%;
-    background-color: #2B74FA; }
+    background-color: #2B74FA;
+    overflow-x: hidden; }
     .widget__part:last-of-type {
-      position: relative;
       background-color: #2253C6; }
       .widget__part:last-of-type:before {
         content: '';
         position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
         width: 0;
         height: 0;
         border-style: solid;
         border-width: 50px 0 50px 50px;
         border-color: transparent transparent transparent #2B74FA; }
+  .widget__currency {
+    position: absolute;
+    top: 50px;
+    left: 50px; }
+    .widget__currency-item {
+      font-size: 60px;
+      padding-bottom: 20px;
+      text-transform: uppercase;
+      color: #ffffff;
+      letter-spacing: 20px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 200ms ease; }
+      .widget__currency-item:first-of-type {
+        opacity: 1; }
+        .widget__currency-item:first-of-type:hover {
+          opacity: .7; }
+    .widget__currency.is-change .widget__currency-item {
+      opacity: 1; }
+      .widget__currency.is-change .widget__currency-item:hover {
+        opacity: .7; }
+  .widget__arrow {
+    position: absolute;
+    right: -30px;
+    top: 15px;
+    display: inline-block;
+    padding: 10px;
+    border: solid #ffffff;
+    border-width: 0 4px 4px 0;
+    -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    transition: transform 200ms ease, opacity 200ms ease;
+    cursor: pointer; }
+  .widget__currency.is-change .widget__arrow {
+    -ms-transform: rotate(45deg);
+        transform: rotate(45deg); }
+  .widget__currency-item:first-of-type:hover ~ .widget__arrow {
+    opacity: .7; }
+  .widget__field {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    border: none;
+    color: #ffffff;
+    font-size: 70px;
+    background-color: #2B74FA;
+    text-align: center;
+    width: calc(100% - 50px); }
 
 /*# sourceMappingURL=application.css.map*/

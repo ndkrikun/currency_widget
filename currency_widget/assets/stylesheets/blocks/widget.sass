@@ -5,18 +5,78 @@
   font-size: 0
 
   &__part
+    position: relative
     display: inline-block
     width: 50%
     height: 100%
     background-color: $blue1
+    overflow-x: hidden
     &:last-of-type
-      position: relative
       background-color: $blue2
       &:before
         content: ''
         position: absolute
+        top: 50%
+        transform: translateY(-50%)
         width: 0
         height: 0
         border-style: solid
         border-width: 50px 0 50px 50px
         border-color: transparent transparent transparent $blue1
+
+  &__currency
+    position: absolute
+    top: 50px
+    left: 50px
+
+    &-item
+      font-size: 60px
+      padding-bottom: 20px
+      text-transform: uppercase
+      color: $white1
+      letter-spacing: 20px
+      cursor: pointer
+      opacity: 0
+      transition: opacity 200ms ease
+      &:first-of-type
+        opacity: 1
+        &:hover
+          opacity: .7
+
+    &.is-change &-item
+      opacity: 1
+      &:hover
+        opacity: .7
+
+  &__arrow
+    position: absolute
+    right: -30px
+    top: 15px
+    display: inline-block
+    padding: 10px
+    border: solid $white1
+    border-width: 0 4px 4px 0
+    transform: rotate(-45deg)
+    transition: transform 200ms ease, opacity 200ms ease
+    cursor: pointer
+
+  &__currency.is-change  &__arrow
+    transform: rotate(45deg)
+
+  &__currency-item:first-of-type:hover ~ &__arrow
+    opacity: .7
+
+  &__field
+    display: inline-block
+    position: absolute
+    top: 50%
+    left: 0
+    right: 0
+    margin: 0 auto
+    transform: translateY(-50%)
+    border: none
+    color: $white1
+    font-size: 70px
+    background-color: $blue1
+    text-align: center
+    width: calc(100% - 50px)
