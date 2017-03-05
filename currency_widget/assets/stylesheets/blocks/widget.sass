@@ -1,0 +1,22 @@
+.widget
+  position: relative
+  height: 100%
+  width: 100%
+  font-size: 0
+
+  &__part
+    display: inline-block
+    width: 50%
+    height: 100%
+    background-color: $blue1
+    &:last-of-type
+      position: relative
+      background-color: $blue2
+      &:before
+        content: ''
+        position: absolute
+        width: 0
+        height: 0
+        border-style: solid
+        border-width: 50px 0 50px 50px
+        border-color: transparent transparent transparent $blue1

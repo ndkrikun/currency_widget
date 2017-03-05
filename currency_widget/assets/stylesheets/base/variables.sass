@@ -1,0 +1,104 @@
+/* colors */
+
+$white1:  #ffffff
+$black1:  #000000
+
+$yellow1: #f7d37f
+
+$blue1: #2B74FA
+$blue2: #2253C6
+
+/* sizes */
+
+
+/* z-indexes */
+
+/* breakpoints */
+
+$screen-xxs:      320px
+$screen-xxs-min:  $screen-xxs
+
+$screen-xs:       480px
+$screen-xs-min:   $screen-xs
+
+$screen-sm:       780px
+$screen-sm-min:   $screen-sm
+
+$screen-md:       1020px
+$screen-md-min:   $screen-md
+
+$screen-lg:       1280px
+$screen-lg-min:   $screen-lg
+
+$screen-xl:       1440px
+$screen-xl-min:   $screen-xl
+
+$screen-xxl:      1920px
+$screen-xxl-min:  $screen-xxl
+
+$screen-xxs-max:  $screen-xs-min - 1
+$screen-xs-max:   $screen-sm-min - 1
+$screen-sm-max:   $screen-md-min - 1
+$screen-md-max:   $screen-lg-min - 1
+$screen-lg-max:   $screen-xl-min - 1
+$screen-xl-max:   $screen-xxl-min - 1
+
+/* mixins of breakpoits */
+
+=breakpoint($min: 0, $max: 0)
+  @if unitless($max)
+    @media screen and (min-width: $min)
+      @content
+
+  @else if unitless($min)
+    @media screen and (max-width: $max)
+      @content
+
+  @else
+    @media screen and (min-width: $min) and (max-width: $max)
+      @content
+
+=retina
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min--moz-device-pixel-ratio: 2), screen and (-o-min-device-pixel-ratio: 2/1), screen and (min-device-pixel-ratio: 2), screen and (min-resolution: 192dpi), screen and (min-resolution: 2dppx)
+    @content
+
+/* mixins fonts */
+
+=font-default
+  font-family: UbuntuB
+
+/* mixins */
+
+=absolute-full
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+=inline
+  white-space: nowrap
+  word-wrap: normal
+
+=notinline
+  white-space: normal
+
+=with-link
+  & a
+    color: $red1
+    &:hover
+      text-decoration: underline
+
+=circle($size, $color, $borderCol, $borderSiz, $hoverCol)
+  display: inline-block
+  height: $size
+  width: $size
+  background-color: $color
+  border-radius: $size
+  border-color: $borderCol
+  border-width: $borderSiz
+  transition: background-color 200ms ease-out
+  &:hover
+    background-color: $hoverCol
+    border-color: $hoverCol
+
