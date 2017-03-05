@@ -5,13 +5,40 @@ class Widget extends Component {
   constructor() {
     super()
     this.model = {
-      input: ['USD', 'EUR', 'GBP'],
-      output: ['EUR', 'USD', 'GBP']
+      input: [{
+        name: 'USD',
+        checked: true
+      }, {
+        name: 'EUR',
+        checked: false
+      }, {
+        name: 'GBP',
+        checked: false
+      }],
+      output: [{
+        name: 'EUR',
+        checked: true
+      }, {
+        name: 'USD',
+        checked: false
+      }, {
+        name: 'GBP',
+        checked: false
+      }]
     }
   }
-  renderCurrency(name) {
+
+  handleCurrencyChange() {
+    const select = event.currentTarget.parentNode;
+    select.classList.add('is-change')
+  }
+
+  renderCurrency(item) {
+    const click = item.checked
+      ? this.handleCurrencyChange
+      : () => {}
     return (
-      <div className="widget__currency-item">{name}</div>
+      <div className="widget__currency-item" onClick={click}>{item.name}</div>
     )
   }
 
@@ -20,17 +47,17 @@ class Widget extends Component {
       <div className="widget js-widget">
         <div className="widget__part">
           <div className="widget__currency js-widget-currency" data-type="input">
-            {this.model.input.map(this.renderCurrency)}
+            {this.model.input.map(item => { this.renderCurrency(item) })}
             <span className="widget__arrow"></span>
           </div>
           <input className="widget__field js-widget-input"
             type="text"
             placeholder="Type value"
-            onchange={this.handleChange} />
+            onChange={this.handleAmmountChange} />
         </div>
         <div className="widget__part">
           <div className="widget__currency js-widget-currency" data-type="output">
-            {this.model.output.map(this.renderCurrency)}
+            {this.model.output.map(item => { this.renderCurrency(item) })}
             <span className="widget__arrow"></span>
           </div>
           <div className="widget__field js-widget-output"></div>
@@ -43,4 +70,4 @@ class Widget extends Component {
 // 'uk.finance.yahoo.com/currencies/converter/#from=GBP;to=EUR;amt=1'
 // http://api.fixer.io/latest?base=USD
 
-ReactDOM.render(<Widget/>, document.body);
+ReactDOM.render(<Widget/>, document.body.querySelector('.js-container'));

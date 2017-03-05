@@ -347,24 +347,51 @@
 	    var _this = _possibleConstructorReturn(this, (Widget.__proto__ || Object.getPrototypeOf(Widget)).call(this));
 	
 	    _this.model = {
-	      input: ['USD', 'EUR', 'GBP'],
-	      output: ['EUR', 'USD', 'GBP']
+	      input: [{
+	        name: 'USD',
+	        checked: true
+	      }, {
+	        name: 'EUR',
+	        checked: false
+	      }, {
+	        name: 'GBP',
+	        checked: false
+	      }],
+	      output: [{
+	        name: 'EUR',
+	        checked: true
+	      }, {
+	        name: 'USD',
+	        checked: false
+	      }, {
+	        name: 'GBP',
+	        checked: false
+	      }]
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(Widget, [{
+	    key: 'handleCurrencyChange',
+	    value: function handleCurrencyChange() {
+	      var select = event.currentTarget.parentNode;
+	      select.classList.add('is-change');
+	    }
+	  }, {
 	    key: 'renderCurrency',
-	    value: function renderCurrency(name) {
+	    value: function renderCurrency(item) {
+	      var click = item.checked ? this.handleCurrencyChange : function () {};
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'widget__currency-item' },
-	        name
+	        { className: 'widget__currency-item', onClick: click },
+	        item.name
 	      );
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'widget js-widget' },
@@ -374,13 +401,15 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'widget__currency js-widget-currency', 'data-type': 'input' },
-	            this.model.input.map(this.renderCurrency),
+	            this.model.input.map(function (item) {
+	              _this2.renderCurrency(item);
+	            }),
 	            _react2.default.createElement('span', { className: 'widget__arrow' })
 	          ),
 	          _react2.default.createElement('input', { className: 'widget__field js-widget-input',
 	            type: 'text',
 	            placeholder: 'Type value',
-	            onchange: this.handleChange })
+	            onChange: this.handleAmmountChange })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -388,7 +417,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'widget__currency js-widget-currency', 'data-type': 'output' },
-	            this.model.output.map(this.renderCurrency),
+	            this.model.output.map(function (item) {
+	              _this2.renderCurrency(item);
+	            }),
 	            _react2.default.createElement('span', { className: 'widget__arrow' })
 	          ),
 	          _react2.default.createElement('div', { className: 'widget__field js-widget-output' })
@@ -403,7 +434,7 @@
 	// 'uk.finance.yahoo.com/currencies/converter/#from=GBP;to=EUR;amt=1'
 	// http://api.fixer.io/latest?base=USD
 	
-	_reactDom2.default.render(_react2.default.createElement(Widget, null), document.body);
+	_reactDom2.default.render(_react2.default.createElement(Widget, null), document.body.querySelector('.js-container'));
 
 /***/ },
 /* 4 */

@@ -175,10 +175,10 @@ body.is-noscroll {
       text-transform: uppercase;
       color: #ffffff;
       letter-spacing: 20px;
-      cursor: pointer;
       opacity: 0;
       transition: opacity 200ms ease; }
       .widget__currency-item:first-of-type {
+        cursor: pointer;
         opacity: 1; }
         .widget__currency-item:first-of-type:hover {
           opacity: .7; }
