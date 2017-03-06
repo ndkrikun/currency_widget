@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var presenter = require('./helpers/json-presenter.js');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var Sprite = require('png-sprite-webpack');
+// var Sprite = require('png-sprite-webpack');
 var WebpackAssetsManifest = require('webpack-assets-manifest');
 var ClearAssets = require('./helpers/clear-assets.js');
 
@@ -16,17 +16,17 @@ module.exports = function(_path, _prod, _nosprites) {
     new webpack.NoErrorsPlugin(),
   ];
 
-  if (!_nosprites) {
-    _plugins.push(new Sprite({
-      source: path.join(_path, _output, 'images/chunks'),
-      source2x: path.join(_path, _output, 'images/chunks2x'),
-      outputCss: path.join(_path, _output, 'stylesheets/base'),
-      outputImg: path.join(_path, _input, 'images'),
-      spriteName: 'sprite',
-      processor: 'sass',
-      resolvedPath: true
-    }));
-  }
+  // if (!_nosprites) {
+  //   _plugins.push(new Sprite({
+  //     source: path.join(_path, _output, 'images/chunks'),
+  //     source2x: path.join(_path, _output, 'images/chunks2x'),
+  //     outputCss: path.join(_path, _output, 'stylesheets/base'),
+  //     outputImg: path.join(_path, _input, 'images'),
+  //     spriteName: 'sprite',
+  //     processor: 'sass',
+  //     resolvedPath: true
+  //   }));
+  // }
 
   _plugins.push(new ExtractTextPlugin('[name].css', {allChunks: true}));
 
@@ -73,7 +73,6 @@ module.exports = function(_path, _prod, _nosprites) {
       moduleDirectories: ['node_modules'],
       alias: {
         _fonts: path.join(_path, _output, 'fonts'),
-        _images: path.join(_path, _output, 'images'),
         _stylesheets: path.join(_path, _output, 'stylesheets'),
       },
     },
@@ -82,9 +81,6 @@ module.exports = function(_path, _prod, _nosprites) {
       loaders: [{
         test: /\.(eot|woff|woff2|ttf|svg)$/,
         loader: 'file?name=fonts/.[ext]',
-      }, {
-        test: /\.(png|jpg)$/,
-        loader: 'file?name=images/.[ext]',
       }, {
         test: /\.sass$/,
         loader: ExtractTextPlugin.extract('css!autoprefixer?{browsers:["not ie <= 9", "last 3 version"]}!sass?sourceMap&indentedSyntax')
