@@ -43,20 +43,26 @@
     &.is-opened &-item
       display: block
 
-  &__arrow
-    position: absolute
-    right: -30px
-    top: 15px
-    display: inline-block
-    padding: 10px
-    border: solid $white1
-    border-width: 0 4px 4px 0
-    transform: rotate(-45deg)
-    +hover(.7)
-    transition: transform 200ms ease, opacity 200ms ease
+    &:hover:not(.is-opened) &-item:first-of-type
+      opacity: .7
 
-  &__currency.is-opened  &__arrow
-    transform: rotate(45deg)
+    &-arrow
+      position: absolute
+      right: -30px
+      top: 15px
+      display: inline-block
+      padding: 10px
+      border: solid $white1
+      border-width: 0 4px 4px 0
+      transform: rotate(-45deg)
+      +hover(.7)
+      transition: transform 200ms ease, opacity 200ms ease
+
+    &.is-opened &-arrow
+      transform: rotate(45deg)
+
+    &:hover:not(.is-opened) &-arrow
+      opacity: .7
 
   &__field
     display: inline-block
