@@ -102,3 +102,10 @@ $screen-xl-max:   $screen-xxl-min - 1
     background-color: $hoverCol
     border-color: $hoverCol
 
+=hover($o)
+  opacity: 1
+  cursor: pointer
+  transition: opacity 200ms ease
+  &:hover
+    opacity: $o
+

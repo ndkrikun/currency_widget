@@ -30,23 +30,18 @@
     left: 50px
 
     &-item
+      display: none
       font-size: 60px
       padding-bottom: 20px
       text-transform: uppercase
       color: $white1
       letter-spacing: 20px
-      opacity: 0
-      transition: opacity 200ms ease
+      +hover(.7)
       &:first-of-type
-        cursor: pointer
-        opacity: 1
-        &:hover
-          opacity: .7
+        display: block
 
-    &.is-change &-item
-      opacity: 1
-      &:hover
-        opacity: .7
+    &.is-opened &-item
+      display: block
 
   &__arrow
     position: absolute
@@ -57,14 +52,11 @@
     border: solid $white1
     border-width: 0 4px 4px 0
     transform: rotate(-45deg)
+    +hover(.7)
     transition: transform 200ms ease, opacity 200ms ease
-    cursor: pointer
 
-  &__currency.is-change  &__arrow
+  &__currency.is-opened  &__arrow
     transform: rotate(45deg)
-
-  &__currency-item:first-of-type:hover ~ &__arrow
-    opacity: .7
 
   &__field
     display: inline-block
