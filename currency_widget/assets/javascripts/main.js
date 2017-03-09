@@ -2,9 +2,20 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
+/**
+ * Wiget class
+ */
 class Widget extends Component {
+  /**
+   * [constructor set initial data]
+   */
   constructor() {
     super()
+
+    /**
+     * [state current state of the view]
+     * @type {Object}
+     */
     this.state = {
       input: {
         opened: false,
@@ -24,6 +35,10 @@ class Widget extends Component {
       }, inputVal: 0, outputVal: 0
     }
 
+    /**
+     * [rates data on exchange rates]
+     * @type {Array}
+     */
     this.rates = [{
       id: 1, name: 'USD',
       relations: [
@@ -48,6 +63,9 @@ class Widget extends Component {
     this.updateRates()
   }
 
+  /**
+   * [updateRates fetch new rates every 30s and store them]
+   */
   async updateRates() {
     const API = 'http://api.fixer.io/latest'
     try {
@@ -65,9 +83,12 @@ class Widget extends Component {
       clearInterval(this.updateRates)
       throw new Error(e)
     }
-    console.log(this.rates)
   }
 
+  /**
+   * [getActiveCurrency get selected currencies]
+   * @return {Object} [id of active input and output currency]
+   */
   getActiveCurrency() {
     let currency = {}
     for (let key in this.state) {
@@ -83,6 +104,12 @@ class Widget extends Component {
     return currency;
   }
 
+  /**
+   * [sortItems sort currency data depending on boolean 'checked' key]
+   * @param  {Array}  items [array of currencies]
+   * @param  {Number} id    [id of checked element]
+   * @return {Array}        [sorted array of currencies]
+   */
   sortItems(items, id) {
     items.map(item => { item.checked = item.id === id })
     return items.sort((x, y) =>
@@ -92,6 +119,12 @@ class Widget extends Component {
     )
   }
 
+
+  /**
+   * [countResult makes the main calculation]
+   * @param  {Number} val [input currency value]
+   * @return {Number}     [output currency value]
+   */
   countResult(val) {
     const inputVal = val === undefined ? this.state.inputVal : val
     const { input, output } = this.getActiveCurrency()
@@ -103,7 +136,7 @@ class Widget extends Component {
       if (rate.id === input) {
         rate.relations.map(relation => {
           if (relation.id === output) {
-            result = inputVal * relation.value
+            result = +(inputVal * relation.value).toFixed(6)
           }
         })
       }
@@ -111,6 +144,10 @@ class Widget extends Component {
     return result
   }
 
+  /**
+   * [toggleCurrency toggles list of currencies state]
+   * @param  {String} type [type of the list]
+   */
   toggleCurrency(type) {
     this.setState(prevState => ({
       [type]: {
@@ -120,6 +157,11 @@ class Widget extends Component {
     }))
   }
 
+  /**
+   * [handleCurrencyChange updates currencies' lists after changing]
+   * @param  {String} type [type of the list]
+   * @param  {Number} id   [id of selected element at the list]
+   */
   handleCurrencyChange(type, id) {
     this.setState(prevState => ({
       [type]: {
@@ -130,6 +172,10 @@ class Widget extends Component {
     }))
   }
 
+  /**
+   * [handleAmmountChange sets new input value]
+   * @param  {Object} event [event context]
+   */
   handleAmmountChange(event) {
     let inputVal = +event.target.value;
     if (!isNaN(inputVal)) {
@@ -140,6 +186,12 @@ class Widget extends Component {
     }
   }
 
+  /**
+   * [renderCurrency renders item from the currency list]
+   * @param  {Object} item [model of the item]
+   * @param  {String} type [type of the list]
+   * @return {Object}      [jsx tpl]
+   */
   renderCurrency(item, type) {
     const click = item.checked
       ? () => this.toggleCurrency(type)
@@ -154,6 +206,12 @@ class Widget extends Component {
     )
   }
 
+  /**
+   * [renderPart renders halt of the widget window]
+   * @param  {Object} data [model]
+   * @param  {Strig}  type [type of the part]
+   * @return {Object}      [jsx tpl]
+   */
   renderPart(data, type) {
     const field = type === 'input'
       ? ( <input className="widget__field js-widget-input" type="text" placeholder="Type value" value={this.state.inputVal} onChange={this.handleAmmountChange.bind(this)} /> )
@@ -170,6 +228,10 @@ class Widget extends Component {
     )
   }
 
+  /**
+   * [render the main function that renders full page]
+   * @return {Object} [jsx tpl]
+   */
   render() {
     return (
       <div className="widget js-widget">
