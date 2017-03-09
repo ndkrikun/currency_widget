@@ -7,38 +7,74 @@
   &__part
     position: relative
     display: inline-block
-    width: 50%
-    height: 100%
+    width: 100%
+    height: 50%
     background-color: $blue1
     overflow-x: hidden
+    +breakpoint($screen-md)
+      width: 50%
+      height: 100%
+
     &:last-of-type
       background-color: $blue2
       &:before
         content: ''
         position: absolute
-        top: 50%
-        transform: translateY(-50%)
+        left: calc(50% - 50px)
         width: 0
         height: 0
         border-style: solid
-        border-width: 50px 0 50px 50px
-        border-color: transparent transparent transparent $blue1
+        border-width: 50px 50px 0px 50px
+        border-color: $blue1 transparent transparent transparent
+        +breakpoint($screen-md)
+          top: 50%
+          left: 0
+          transform: translateY(-50%)
+          border-width: 50px 0 50px 50px
+          border-color: transparent transparent transparent $blue1
 
   &__currency
     position: absolute
-    top: 50px
-    left: 50px
+    top: 20px
+    left: 20px
+    z-index: $list-zindex
+    +breakpoint($screen-sm)
+      top: 50px
+      left: 50px
 
     &-item
+      position: relative
       display: none
-      font-size: 60px
+      font-size: 25px
       padding-bottom: 20px
       text-transform: uppercase
       color: $white1
-      letter-spacing: 20px
-      +hover(.7)
+      letter-spacing: 8px
+      cursor: pointer
+      +breakpoint($screen-xs)
+        font-size: 35px
+      +breakpoint($screen-sm)
+        font-size: 60px
+      &:after
+        content: ''
+        position: absolute
+        bottom: 15px
+        left: 0
+        right: 0
+        width: 0%
+        height: 1px
+        margin: 0 auto
+        opacity: .7
+        background-color: $white1
+        transition: width 200ms ease
+      &:hover:after
+        width: 90%
+        opacity: 1
       &:first-of-type
         display: block
+        +hover(.7)
+      &:first-of-type:after
+        display: none
 
     &.is-opened &-item
       display: block
@@ -48,15 +84,25 @@
 
     &-arrow
       position: absolute
-      right: -30px
-      top: 15px
       display: inline-block
-      padding: 10px
       border: solid $white1
-      border-width: 0 4px 4px 0
+      padding: 6px
+      right: -15px
+      top: 6px
+      border-width: 0 1px 1px 0
       transform: rotate(-45deg)
       +hover(.7)
       transition: transform 200ms ease, opacity 200ms ease
+      +breakpoint($screen-xs)
+        top: 8px
+        padding: 8px
+        right: -20px
+        border-width: 0 1px 1px 0
+      +breakpoint($screen-sm)
+        top: 16px
+        padding: 10px
+        right: -30px
+        border-width: 0 4px 4px 0
 
     &.is-opened &-arrow
       transform: rotate(45deg)
@@ -67,6 +113,7 @@
   &__field
     display: inline-block
     position: absolute
+    z-index: $filed-zindex
     top: 50%
     left: 0
     right: 0
@@ -74,10 +121,13 @@
     transform: translateY(-50%)
     border: none
     color: $white1
-    font-size: 70px
+    font-size: 45px
+    +font-default
     background-color: $blue1
     text-align: center
     width: calc(100% - 100px)
+    +breakpoint($screen-sm)
+      font-size: 70px
 
   &__part:last-of-type &__field
     widows: 
