@@ -93,8 +93,9 @@ class Widget extends Component {
   }
 
   countResult(val) {
-    const inputVal = val || this.state.inputVal;
-    const { input, output } = this.getActiveCurrency();
+    const inputVal = val === undefined ? this.state.inputVal : val
+    const { input, output } = this.getActiveCurrency()
+    let result;
     if (input === output) {
       return inputVal
     }
@@ -102,12 +103,12 @@ class Widget extends Component {
       if (rate.id === input) {
         rate.relations.map(relation => {
           if (relation.id === output) {
-            console.log(inputVal * relation.value)
-            return (inputVal * relation.value)
+            result = inputVal * relation.value
           }
         })
       }
     })
+    return result
   }
 
   toggleCurrency(type) {
@@ -130,7 +131,7 @@ class Widget extends Component {
   }
 
   handleAmmountChange(event) {
-    const inputVal          = +event.target.value;
+    let inputVal = +event.target.value;
     if (!isNaN(inputVal)) {
       this.setState({
         inputVal: inputVal,
@@ -170,7 +171,6 @@ class Widget extends Component {
   }
 
   render() {
-    console.log(this.state.outputVal)
     return (
       <div className="widget js-widget">
         {Object.keys((({ input, output }) => ({ input, output }))(this.state)).map(
