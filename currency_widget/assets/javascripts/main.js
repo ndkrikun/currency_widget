@@ -7,7 +7,7 @@ class Widget extends Component {
     super()
     this.state = {
       input: {
-        opened: true,
+        opened: false,
         items:[
           { id: 1, name: 'USD', checked: true },
           { id: 2, name: 'EUR', checked: false },
@@ -17,11 +17,11 @@ class Widget extends Component {
       output: {
         opened: false,
         items: [
-          { id: 1, name: 'EUR', checked: true },
-          { id: 2, name: 'USD', checked: false },
+          { id: 2, name: 'EUR', checked: true },
+          { id: 1, name: 'USD', checked: false },
           { id: 3, name: 'GBP', checked: false }
         ]
-      }
+      }, inputVal: 0, outputVal: 0
     }
 
     this.rates = [{
@@ -68,6 +68,21 @@ class Widget extends Component {
     console.log(this.rates)
   }
 
+  getActiveCurrency() {
+    let currency = {}
+    for (let key in this.state) {
+      if (this.state[key] 
+      &&  this.state[key].hasOwnProperty('items')) {
+        this.state[key].items.map((item) => {
+          if (item.checked) {
+            currency[key] = item.id;
+          }
+        })
+      }
+    }
+    return currency;
+  }
+
   sortItems(items, id) {
     items.map(item => { item.checked = item.id === id })
     return items.sort((x, y) =>
@@ -77,7 +92,25 @@ class Widget extends Component {
     )
   }
 
-  toggleList(type) {
+  countResult(val) {
+    const inputVal = val || this.state.inputVal;
+    const { input, output } = this.getActiveCurrency();
+    if (input === output) {
+      return inputVal
+    }
+    this.rates.map(rate => {
+      if (rate.id === input) {
+        rate.relations.map(relation => {
+          if (relation.id === output) {
+            console.log(inputVal * relation.value)
+            return (inputVal * relation.value)
+          }
+        })
+      }
+    })
+  }
+
+  toggleCurrency(type) {
     this.setState(prevState => ({
       [type]: {
         opened: !prevState[type].opened,
@@ -90,14 +123,25 @@ class Widget extends Component {
     this.setState(prevState => ({
       [type]: {
         opened: !prevState[type].opened,
-        items: this.sortItems(prevState[type].items, id)
-      }
+        items: this.sortItems(prevState[type].items, id),
+      },
+      outputVal: this.countResult()
     }))
+  }
+
+  handleAmmountChange(event) {
+    const inputVal          = +event.target.value;
+    if (!isNaN(inputVal)) {
+      this.setState({
+        inputVal: inputVal,
+        outputVal: this.countResult(inputVal)
+      })
+    }
   }
 
   renderCurrency(item, type) {
     const click = item.checked
-      ? () => this.toggleList(type)
+      ? () => this.toggleCurrency(type)
       : () => this.handleCurrencyChange(type, item.id)
     return (
       <div className="widget__currency-item"
@@ -111,14 +155,14 @@ class Widget extends Component {
 
   renderPart(data, type) {
     const field = type === 'input'
-      ? ( <input className="widget__field js-widget-input" type="text" placeholder="Type value" onChange={this.handleAmmountChange} /> )
-      : ( <div className="widget__field js-widget-output"></div> )
+      ? ( <input className="widget__field js-widget-input" type="text" placeholder="Type value" value={this.state.inputVal} onChange={this.handleAmmountChange.bind(this)} /> )
+      : ( <div className="widget__field js-widget-output">{this.state.outputVal}</div> )
 
     return (
       <div className="widget__part">
         <div className={`widget__currency js-widget-currency ${data.opened ? 'is-opened' : ''}`}>
           {data.items.map(item => this.renderCurrency(item, type) )}
-          <span className="widget__currency-arrow" onClick={() => this.toggleList(type)}></span>
+          <span className="widget__currency-arrow" onClick={() => this.toggleCurrency(type)}></span>
         </div>
         {field}
       </div>
@@ -126,9 +170,10 @@ class Widget extends Component {
   }
 
   render() {
+    console.log(this.state.outputVal)
     return (
       <div className="widget js-widget">
-        {Object.keys(this.state).map(
+        {Object.keys((({ input, output }) => ({ input, output }))(this.state)).map(
           key => this.renderPart(this.state[key], key)
         )}
       </div>
